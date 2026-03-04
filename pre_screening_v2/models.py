@@ -85,6 +85,7 @@ class SessionInput:
     allow_escalation: bool = True
     require_consent: bool = True
     is_playground: bool = False
+    persona_name: str = "Anna"
 
     def to_dict(self) -> dict:
         return {
@@ -115,6 +116,7 @@ class SessionInput:
             "allow_escalation": self.allow_escalation,
             "require_consent": self.require_consent,
             "is_playground": self.is_playground,
+            "persona_name": self.persona_name,
         }
 
     @classmethod
@@ -156,6 +158,7 @@ class SessionInput:
             allow_escalation=data.get("allow_escalation", True),
             require_consent=data.get("require_consent", True),
             is_playground=data.get("is_playground", False),
+            persona_name=data.get("persona_name", "Anna"),
         )
 
 

@@ -13,9 +13,9 @@ ALTERNATIVE_QUESTIONS = [
 
 
 class AlternativeAgent(BaseAgent):
-    def __init__(self, job_title: str, failed_question: str, allow_escalation: bool = True) -> None:
+    def __init__(self, job_title: str, failed_question: str, allow_escalation: bool = True, persona_name: str = "Anna") -> None:
         super().__init__(
-            instructions=alternative_prompt(job_title, allow_escalation=allow_escalation),
+            instructions=alternative_prompt(job_title, allow_escalation=allow_escalation, persona_name=persona_name),
             turn_detection=None,  # yes/no + short answers, no semantic turn detection needed
             allow_escalation=allow_escalation,
         )

@@ -8,9 +8,9 @@ from prompts import greeting_prompt
 
 
 class GreetingAgent(BaseAgent):
-    def __init__(self, job_title: str, candidate_name: str = "", candidate_known: bool = False, allow_escalation: bool = True, require_consent: bool = False) -> None:
+    def __init__(self, job_title: str, candidate_name: str = "", candidate_known: bool = False, allow_escalation: bool = True, require_consent: bool = False, persona_name: str = "Anna") -> None:
         super().__init__(
-            instructions=greeting_prompt(job_title, candidate_name, candidate_known, allow_escalation=allow_escalation, require_consent=require_consent),
+            instructions=greeting_prompt(job_title, candidate_name, candidate_known, allow_escalation=allow_escalation, require_consent=require_consent, persona_name=persona_name),
             turn_detection=None,  # disable semantic turn detection for simple yes/no
             allow_escalation=allow_escalation,
         )
@@ -39,6 +39,7 @@ class GreetingAgent(BaseAgent):
         self.session.update_agent(ScreeningAgent(
             job_title=userdata.input.job_title,
             allow_escalation=userdata.input.allow_escalation,
+            persona_name=userdata.input.persona_name,
         ))
 
     @function_tool()
@@ -47,10 +48,11 @@ class GreetingAgent(BaseAgent):
         userdata = self.session.userdata
         userdata.voicemail_detected = True
         candidate_name = userdata.input.candidate_name
+        persona = userdata.input.persona_name
         if candidate_name:
-            message = msg(userdata, "voicemail_with_name", name=candidate_name)
+            message = msg(userdata, "voicemail_with_name", name=candidate_name, persona_name=persona)
         else:
-            message = msg(userdata, "voicemail_without_name")
+            message = msg(userdata, "voicemail_without_name", persona_name=persona)
         await self.session.say(message, allow_interruptions=False)
         await asyncio.sleep(0.5)
         self.session.shutdown(drain=True)

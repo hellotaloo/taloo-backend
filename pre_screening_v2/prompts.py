@@ -35,12 +35,12 @@ def shared_language_rules(allow_escalation: bool = True) -> str:
     return rules
 
 
-def greeting_prompt(job_title: str, candidate_name: str = "", candidate_known: bool = False, allow_escalation: bool = True, require_consent: bool = False) -> str:
+def greeting_prompt(job_title: str, candidate_name: str = "", candidate_known: bool = False, allow_escalation: bool = True, require_consent: bool = False, persona_name: str = "Anna") -> str:
     if require_consent:
-        intro_steps = '1. WACHT tot de kandidaat opneemt en iets zegt (zoals "hallo").\n2. Stel jezelf voor als Anna, de digitale assistent van Its You. Leg kort uit dat je een digitale assistent bent die speciaal ontwikkeld is om de kandidaat sneller aan een job te helpen. Zeg daarna: "Voor we beginnen: dit gesprek kan opgenomen worden voor kwaliteits- en trainingsdoeleinden. Is dat oke voor jou?"\n3. Als de kandidaat JA zegt → roep `record_consent` aan.\n4. Als de kandidaat NEE zegt → roep `record_no_consent` aan.'
+        intro_steps = f'1. WACHT tot de kandidaat opneemt en iets zegt (zoals "hallo").\n2. Stel jezelf voor als {persona_name}, de digitale assistent van Its You. Leg kort uit dat je een digitale assistent bent die speciaal ontwikkeld is om de kandidaat sneller aan een job te helpen. Zeg daarna: "Voor we beginnen: dit gesprek kan opgenomen worden voor kwaliteits- en trainingsdoeleinden. Is dat oke voor jou?"\n3. Als de kandidaat JA zegt → roep `record_consent` aan.\n4. Als de kandidaat NEE zegt → roep `record_no_consent` aan.'
         n = 5
     else:
-        intro_steps = '1. WACHT tot de kandidaat opneemt en iets zegt (zoals "hallo").\n2. Stel jezelf voor als Anna, de digitale assistent van Its You. Leg kort uit dat je een digitale assistent bent die speciaal ontwikkeld is om de kandidaat sneller aan een job te helpen. Start met "Goedemiddag, je spreekt met Anna...".'
+        intro_steps = f'1. WACHT tot de kandidaat opneemt en iets zegt (zoals "hallo").\n2. Stel jezelf voor als {persona_name}, de digitale assistent van Its You. Leg kort uit dat je een digitale assistent bent die speciaal ontwikkeld is om de kandidaat sneller aan een job te helpen. Start met "Goedemiddag, je spreekt met {persona_name}...".'
         n = 3
 
     if candidate_known and candidate_name:
@@ -58,7 +58,7 @@ def greeting_prompt(job_title: str, candidate_name: str = "", candidate_known: b
 
     return f"""\
 # Wie je bent
-- Je bent Anna, de digitale assistent van Its You.
+- Je bent {persona_name}, de digitale assistent van Its You.
 - Je voert een kort telefoongesprek met een kandidaat voor de functie {job_title}.
 
 {shared_language_rules(allow_escalation)}
@@ -83,10 +83,10 @@ def greeting_prompt(job_title: str, candidate_name: str = "", candidate_known: b
 """
 
 
-def screening_prompt(job_title: str, allow_escalation: bool = True) -> str:
+def screening_prompt(job_title: str, allow_escalation: bool = True, persona_name: str = "Anna") -> str:
     return f"""\
 # Wie je bent
-- Je bent Anna, de digitale assistent van Its You.
+- Je bent {persona_name}, de digitale assistent van Its You.
 - Je stelt knockout-vragen aan een kandidaat voor de functie {job_title}.
 
 {shared_language_rules(allow_escalation)}
@@ -99,10 +99,10 @@ def screening_prompt(job_title: str, allow_escalation: bool = True) -> str:
 """
 
 
-def open_questions_prompt(job_title: str, allow_escalation: bool = True) -> str:
+def open_questions_prompt(job_title: str, allow_escalation: bool = True, persona_name: str = "Anna") -> str:
     return f"""\
 # Wie je bent
-- Je bent Anna, de digitale assistent van Its You.
+- Je bent {persona_name}, de digitale assistent van Its You.
 - Je stelt open vragen aan een kandidaat voor de functie {job_title}.
 
 {shared_language_rules(allow_escalation)}
@@ -113,10 +113,10 @@ def open_questions_prompt(job_title: str, allow_escalation: bool = True) -> str:
 """
 
 
-def alternative_prompt(job_title: str, allow_escalation: bool = True) -> str:
+def alternative_prompt(job_title: str, allow_escalation: bool = True, persona_name: str = "Anna") -> str:
     return f"""\
 # Wie je bent
-- Je bent Anna, de digitale assistent van Its You.
+- Je bent {persona_name}, de digitale assistent van Its You.
 
 {shared_language_rules(allow_escalation)}
 
@@ -129,10 +129,10 @@ def alternative_prompt(job_title: str, allow_escalation: bool = True) -> str:
 """
 
 
-def scheduling_prompt(today: str, allow_escalation: bool = True) -> str:
+def scheduling_prompt(today: str, allow_escalation: bool = True, persona_name: str = "Anna") -> str:
     return f"""\
 # Wie je bent
-- Je bent Anna, de digitale assistent van Its You.
+- Je bent {persona_name}, de digitale assistent van Its You.
 - Je plant een sollicitatiegesprek in met de kandidaat.
 - Vandaag is {today}.
 

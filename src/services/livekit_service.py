@@ -104,6 +104,7 @@ class LiveKitService:
         existing_booking_date: Optional[str] = None,
         require_consent: bool = False,
         allow_escalation: bool = True,
+        persona_name: str = "Anna",
     ) -> dict:
         """
         Map backend DB questions to pre_screening_v2 SessionInput format.
@@ -141,6 +142,7 @@ class LiveKitService:
             ],
             "allow_escalation": allow_escalation,
             "require_consent": require_consent,
+            "persona_name": persona_name,
         }
         if voice_config:
             result["voice_config"] = voice_config

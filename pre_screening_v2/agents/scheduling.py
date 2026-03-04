@@ -57,11 +57,11 @@ def _build_fallback_slots() -> list[str]:
 
 
 class SchedulingAgent(BaseAgent):
-    def __init__(self, office_location: str = "", office_address: str = "", allow_escalation: bool = True) -> None:
+    def __init__(self, office_location: str = "", office_address: str = "", allow_escalation: bool = True, persona_name: str = "Anna") -> None:
         today = date.today()
         today_str = f"{_DAY_NAMES[today.weekday()]} {today.day} {_MONTH_NAMES[today.month]} {today.year}"
         super().__init__(
-            instructions=scheduling_prompt(today_str, allow_escalation=allow_escalation),
+            instructions=scheduling_prompt(today_str, allow_escalation=allow_escalation, persona_name=persona_name),
             turn_detection=None,  # short answers, no semantic turn detection needed
             allow_escalation=allow_escalation,
         )

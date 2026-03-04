@@ -26,6 +26,7 @@ router = APIRouter(tags=["Playground"])
 class PlaygroundStartRequest(BaseModel):
     vacancy_id: str
     candidate_name: str = "Playground Kandidaat"
+    persona_name: str = "Anna"  # Voice persona name (e.g. "Anna", "Eva") — overrides the default in prompts and voicemail
     start_agent: Optional[str] = None  # e.g. "screening", "scheduling" — skip to specific step
     require_consent: bool = False
     candidate_known: bool = False
@@ -130,6 +131,7 @@ async def start_playground_session(request: PlaygroundStartRequest):
     session_input["require_consent"] = request.require_consent
     session_input["candidate_known"] = request.candidate_known
     session_input["allow_escalation"] = request.allow_escalation
+    session_input["persona_name"] = request.persona_name
     if request.start_agent:
         session_input["start_agent"] = request.start_agent
     if request.voice_id:

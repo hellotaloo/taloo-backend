@@ -33,17 +33,18 @@ from agents.scheduling import SchedulingAgent
 def _build_start_agent(name: str, inp: SessionInput):
     """Build a start agent by name, using the session input for configuration."""
     esc = inp.allow_escalation
+    pn = inp.persona_name
     if name == "greeting":
-        return GreetingAgent(job_title=inp.job_title, candidate_name=inp.candidate_name, candidate_known=inp.candidate_known, allow_escalation=esc, require_consent=inp.require_consent)
+        return GreetingAgent(job_title=inp.job_title, candidate_name=inp.candidate_name, candidate_known=inp.candidate_known, allow_escalation=esc, require_consent=inp.require_consent, persona_name=pn)
     if name == "screening":
-        return ScreeningAgent(job_title=inp.job_title, allow_escalation=esc)
+        return ScreeningAgent(job_title=inp.job_title, allow_escalation=esc, persona_name=pn)
     if name == "open_questions":
-        return OpenQuestionsAgent(job_title=inp.job_title, allow_escalation=esc)
+        return OpenQuestionsAgent(job_title=inp.job_title, allow_escalation=esc, persona_name=pn)
     if name == "scheduling":
-        return SchedulingAgent(office_location=inp.office_location, office_address=inp.office_address, allow_escalation=esc)
+        return SchedulingAgent(office_location=inp.office_location, office_address=inp.office_address, allow_escalation=esc, persona_name=pn)
     if name == "alternative":
         from agents.alternative import AlternativeAgent
-        return AlternativeAgent(job_title=inp.job_title, failed_question="(debug mode)", allow_escalation=esc)
+        return AlternativeAgent(job_title=inp.job_title, failed_question="(debug mode)", allow_escalation=esc, persona_name=pn)
     if name == "recruiter":
         from agents.recruiter import RecruiterAgent
         return RecruiterAgent()
@@ -183,6 +184,7 @@ async def entrypoint(ctx: agents.JobContext):
         candidate_known=inp.candidate_known,
         allow_escalation=inp.allow_escalation,
         require_consent=inp.require_consent,
+        persona_name=inp.persona_name,
     )
 
     # Usage tracking: collect metrics per session and write to file on shutdown

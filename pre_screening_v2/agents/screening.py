@@ -6,9 +6,9 @@ from tasks.knockout import KnockoutTask
 
 
 class ScreeningAgent(BaseAgent):
-    def __init__(self, job_title: str, allow_escalation: bool = True) -> None:
+    def __init__(self, job_title: str, allow_escalation: bool = True, persona_name: str = "Anna") -> None:
         super().__init__(
-            instructions=screening_prompt(job_title, allow_escalation=allow_escalation),
+            instructions=screening_prompt(job_title, allow_escalation=allow_escalation, persona_name=persona_name),
             turn_detection=None,  # knockout questions are yes/no, no semantic turn detection needed
             allow_escalation=allow_escalation,
         )
@@ -31,7 +31,7 @@ class ScreeningAgent(BaseAgent):
                 ))
             userdata.passed_knockout = True
             from agents.open_questions import OpenQuestionsAgent
-            self.session.update_agent(OpenQuestionsAgent(job_title=inp.job_title, allow_escalation=self._allow_escalation))
+            self.session.update_agent(OpenQuestionsAgent(job_title=inp.job_title, allow_escalation=self._allow_escalation, persona_name=inp.persona_name))
             return
 
         prev_answer = ""
@@ -99,11 +99,12 @@ class ScreeningAgent(BaseAgent):
                     job_title=inp.job_title,
                     failed_question=q.text,
                     allow_escalation=self._allow_escalation,
+                    persona_name=inp.persona_name,
                 ))
                 return
 
         # All passed → silent handoff, OpenQuestionsAgent handles the transition speech
         userdata.passed_knockout = True
         from agents.open_questions import OpenQuestionsAgent
-        self.session.update_agent(OpenQuestionsAgent(job_title=inp.job_title, allow_escalation=self._allow_escalation))
+        self.session.update_agent(OpenQuestionsAgent(job_title=inp.job_title, allow_escalation=self._allow_escalation, persona_name=inp.persona_name))
 
