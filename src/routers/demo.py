@@ -328,10 +328,10 @@ async def seed_demo_data(activities: bool = Query(True, description="Include act
     try:
         async with pool.acquire() as conn:
             row = await conn.fetchrow("""
-                INSERT INTO ats.office_locations (workspace_id, name, address, is_default)
-                VALUES ($1, $2, $3, true)
+                INSERT INTO ats.office_locations (workspace_id, name, address, spoken_name, is_default)
+                VALUES ($1, $2, $3, $4, true)
                 RETURNING id
-            """, DEFAULT_WORKSPACE_ID, "ITZU Antwerpen Centraal", "Mechelsesteenweg 27, 2018 Antwerpen")
+            """, DEFAULT_WORKSPACE_ID, "ITZU Antwerpen centrum", "Mechelsesteenweg 27, 2018 Antwerpen", "Antwerpen centrum")
             office_location_id = row["id"]
 
             # Assign to all vacancies in this workspace
